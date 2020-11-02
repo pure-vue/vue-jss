@@ -458,3 +458,53 @@ const Button = defineComponent({
   }
 })
 ```
+
+# Usage within a single file component .Vue
+```vue
+<template>
+  <div :class="classes.button" class="btn">
+    <span :class="classes.span">
+      <slot />
+    </span>
+  </div>
+</template>
+
+<script>
+import {createUseStyles, useTheme} from 'vue-jss'
+
+// Using `theme` function is better when you have many theme dependant styles.
+const useStyles = createUseStyles(theme => ({
+  button: {
+    background: theme.colorPrimary,
+    display:'inline-block',
+    marginTop:15
+  },
+  span: {
+    padding:'10px 20px',
+    color: 'blue',
+  },
+}))
+
+export default {
+  name: 'ButtonWithTheme',
+  props: {
+    name: { type: String, default: 'Button.vue' }
+  },
+  setup(props) {
+    const theme = useTheme()
+    const classes = useStyles({ ...props, theme })
+    return {
+      classes
+    }
+  }
+}
+</script>
+
+<style scoped>
+.btn {
+}
+</style>
+
+
+```
+
